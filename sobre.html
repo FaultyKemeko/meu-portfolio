@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sobre Mim</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <canvas id="sky" aria-hidden="true"></canvas>
+
+  <main class="container container-sobre">
+    
+    <div style="width: 100%; text-align: left; margin-bottom: 10px;">
+      <a href="index.html" class="btn-back">&larr; Voltar ao início</a>
+    </div>
+
+    <div class="profile-pic-container">
+      <img src="assets/unnamed.jpg" alt="Foto de Perfil" class="profile-pic">
+    </div>
+
+    <h1 class="name">Pedro Gabriel</h1>
+    <p class="role">Desenvolvedor Front-end no Programa Trilhas</p>
+
+    <div class="about-text-content">
+      <p>
+        Sou um desenvolvedor front-end que gosta de criar experiências digitais envolventes e acessíveis. Com uma sólida formação em design e programação, me dedico a integrar ideias em interfaces intuitivas e funcionais que chamam a atenção dos usuários.
+      </p>
+    </div>
+
+    <div class="social-links about-social">
+      <a href="https://github.com/FaultyKemeko" target="_blank" aria-label="GitHub">
+        <i class="fa-brands fa-github"></i>
+      </a>
+      <a href="https://www.linkedin.com/in/pedrogss/" target="_blank" aria-label="LinkedIn">
+        <i class="fa-brands fa-linkedin"></i>
+      </a>
+      <a href="https://pkem.itch.io" target="_blank" aria-label="Itch.io">
+        <i class="fa-solid fa-gamepad"></i>
+      </a>
+    </div>
+  </main>
+
+  <script>
+  (function(){
+    const canvas = document.getElementById('sky');
+    const ctx = canvas.getContext('2d');
+    let W, H, stars = [];
+    const numStars = 65;
+
+    function resize() {
+      W = canvas.width = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    }
+
+    function initStars() {
+      stars = [];
+      for (let i = 0; i < numStars; i++) {
+        stars.push({
+          x: Math.random() * W,
+          y: Math.random() * H,
+          length: Math.random() * 60 + 20,
+          speed: Math.random() * 1.5 + 1,
+          opacity: Math.random() * 0.7 + 0.3
+        });
+      }
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, W, H);
+      ctx.lineWidth = 2;
+      for (let i = 0; i < stars.length; i++) {
+        let s = stars[i];
+        let gradient = ctx.createLinearGradient(s.x, s.y, s.x - s.length * 0.7, s.y - s.length * 0.7);
+        gradient.addColorStop(0, `rgba(210, 230, 255, ${s.opacity})`);
+        gradient.addColorStop(1, 'rgba(210, 230, 255, 0)');
+        ctx.strokeStyle = gradient;
+        ctx.beginPath();
+        ctx.moveTo(s.x, s.y);
+        ctx.lineTo(s.x - s.length * 0.7, s.y - s.length * 0.7);
+        ctx.stroke();
+
+        s.x -= s.speed * 0.7;
+        s.y += s.speed;
+
+        if (s.y > H + 50 || s.x < -50) {
+          s.x = Math.random() * (W + 200);
+          s.y = -50;
+        }
+      }
+      requestAnimationFrame(animate);
+    }
+
+    window.addEventListener('resize', () => { resize(); initStars(); });
+    resize(); initStars(); animate();
+  })();
+  </script>
+</body>
+</html>
